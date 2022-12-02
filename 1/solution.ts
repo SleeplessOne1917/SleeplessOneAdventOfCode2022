@@ -47,5 +47,5 @@ export const solution2 = async () => {
     .slice(-3)
     .reduce((acc, cur) => acc + cur, 0);
 
-  console.log(`Largest number of calories: ${total}`);
+  console.log(`Sum of 3 highest calorie holder's calories: ${total}`);
 };
