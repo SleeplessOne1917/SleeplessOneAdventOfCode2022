@@ -37,13 +37,13 @@ const myMoveMap = new Map<string, MoveType>([
 ]);
 
 const playGame = (opponentMove: MoveType, myMove: MoveType): GameResult => {
-  const moves = new Set([opponentMove, myMove]);
+  const moves = [opponentMove, myMove];
 
   if (opponentMove === myMove) {
     return draw;
-  } else if (moves.has(rock) && moves.has(paper)) {
+  } else if (moves.includes(rock) && moves.includes(paper)) {
     return myMove === paper ? win : lose;
-  } else if (moves.has(rock) && moves.has(scissors)) {
+  } else if (moves.includes(rock) && moves.includes(scissors)) {
     return myMove === rock ? win : lose;
   } else {
     return myMove === scissors ? win : lose;
