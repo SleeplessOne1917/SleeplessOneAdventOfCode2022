@@ -83,7 +83,6 @@ const run = async () => {
     }
 
     keepRunning = /^[yY].*/.test(shouldContinue);
-    console.log(keepRunning);
   } while (keepRunning);
 
   process.exit(0);
