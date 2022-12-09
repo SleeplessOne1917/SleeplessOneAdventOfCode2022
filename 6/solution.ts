@@ -1,5 +1,5 @@
-import { join } from "path";
-import { open } from "fs/promises";
+import { join } from 'path';
+import { open } from 'fs/promises';
 
 const charactersAreDifferent = (characters: string[]) =>
   characters.reduce<{ different: boolean; examined: string[] }>(
@@ -38,7 +38,7 @@ const getStart = (signal: string, numberOfDifferentCharacters: number) => {
 };
 
 const getSignal = async () => {
-  const file = await open(join("6", "input.txt"));
+  const file = await open(join('6', 'input.txt'));
 
   try {
     return await file.readFile();
@@ -52,7 +52,7 @@ const getPacketStart = (signal: string) => getStart(signal, 4);
 const getMessageStart = (signal: string) => getStart(signal, 14);
 
 export const solution1 = async () => {
-  console.log("Processing signal for start of packet marker");
+  console.log('Processing signal for start of packet marker');
 
   const signal = await getSignal();
 
@@ -62,7 +62,7 @@ export const solution1 = async () => {
 };
 
 export const solution2 = async () => {
-  console.log("Processing signal for start of message marker");
+  console.log('Processing signal for start of message marker');
 
   const signal = await getSignal();
 

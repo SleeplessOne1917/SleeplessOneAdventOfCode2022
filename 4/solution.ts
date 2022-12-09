@@ -1,10 +1,10 @@
-import { join } from "path";
-import { open } from "fs/promises";
+import { join } from 'path';
+import { open } from 'fs/promises';
 
 const sectionRangeRegex = /(\d+)-(\d+)/;
 
 const getRangeNumbers = (line: string) => {
-  const [range1, range2] = line.split(",");
+  const [range1, range2] = line.split(',');
 
   const range1Match = range1.match(sectionRangeRegex) as RegExpMatchArray;
   const range1Start = parseInt(range1Match[1], 10);
@@ -18,8 +18,8 @@ const getRangeNumbers = (line: string) => {
 };
 
 export const solution1 = async () => {
-  console.log("Finding section ranges that contain other section ranges.");
-  const file = await open(join("4", "input.txt"));
+  console.log('Finding section ranges that contain other section ranges.');
+  const file = await open(join('4', 'input.txt'));
 
   let containingSections = 0;
 
@@ -41,8 +41,8 @@ export const solution1 = async () => {
 };
 
 export const solution2 = async () => {
-  console.log("Finding section ranges that overlap.");
-  const file = await open(join("4", "input.txt"));
+  console.log('Finding section ranges that overlap.');
+  const file = await open(join('4', 'input.txt'));
 
   let overlappingSections = 0;
 

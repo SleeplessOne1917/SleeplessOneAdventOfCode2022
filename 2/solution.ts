@@ -1,16 +1,16 @@
-import { join } from "path";
-import { open } from "fs/promises";
+import { join } from 'path';
+import { open } from 'fs/promises';
 
-const rock = "rock";
-const scissors = "scissors";
-const paper = "paper";
+const rock = 'rock';
+const scissors = 'scissors';
+const paper = 'paper';
 
-const lose = "lose";
-const draw = "draw";
-const win = "win";
+const lose = 'lose';
+const draw = 'draw';
+const win = 'win';
 
-type MoveType = "rock" | "paper" | "scissors";
-type GameResult = "win" | "lose" | "draw";
+type MoveType = 'rock' | 'paper' | 'scissors';
+type GameResult = 'win' | 'lose' | 'draw';
 
 const moveScoreMap = new Map<MoveType, number>([
   [rock, 1],
@@ -25,15 +25,15 @@ const resultScoreMap = new Map<GameResult, number>([
 ]);
 
 const opponentMoveMap = new Map<string, MoveType>([
-  ["A", rock],
-  ["B", paper],
-  ["C", scissors],
+  ['A', rock],
+  ['B', paper],
+  ['C', scissors],
 ]);
 
 const myMoveMap = new Map<string, MoveType>([
-  ["X", rock],
-  ["Y", paper],
-  ["Z", scissors],
+  ['X', rock],
+  ['Y', paper],
+  ['Z', scissors],
 ]);
 
 const playGame = (opponentMove: MoveType, myMove: MoveType): GameResult => {
@@ -56,8 +56,8 @@ const calculateScore = (move: MoveType, result: GameResult) =>
   (moveScoreMap.get(move) ?? 0) + (resultScoreMap.get(result) ?? 0);
 
 export const solution1 = async () => {
-  console.log("Calculating score of rock paper scissors games.");
-  const file = await open(join("2", "input.txt"));
+  console.log('Calculating score of rock paper scissors games.');
+  const file = await open(join('2', 'input.txt'));
 
   let score = 0;
 
@@ -76,9 +76,9 @@ export const solution1 = async () => {
 };
 
 const gameResultMap = new Map<string, GameResult>([
-  ["X", lose],
-  ["Y", draw],
-  ["Z", win],
+  ['X', lose],
+  ['Y', draw],
+  ['Z', win],
 ]);
 
 const calculateMove = (opponentMove: MoveType, gameResult: GameResult) => {
@@ -94,8 +94,8 @@ const calculateMove = (opponentMove: MoveType, gameResult: GameResult) => {
 };
 
 export const solution2 = async () => {
-  console.log("Calculating score of rock paper scissors games.");
-  const file = await open(join("2", "input.txt"));
+  console.log('Calculating score of rock paper scissors games.');
+  const file = await open(join('2', 'input.txt'));
 
   let score = 0;
 

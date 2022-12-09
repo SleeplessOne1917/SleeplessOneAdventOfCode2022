@@ -1,29 +1,33 @@
 import {
   solution1 as day1Solution1,
   solution2 as day1Solution2,
-} from "./1/solution";
+} from './1/solution';
 import {
   solution1 as day2Solution1,
   solution2 as day2Solution2,
-} from "./2/solution";
+} from './2/solution';
 import {
   solution1 as day3Solution1,
   solution2 as day3Solution2,
-} from "./3/solution";
+} from './3/solution';
 import {
   solution1 as day4Solution1,
   solution2 as day4Solution2,
-} from "./4/solution";
+} from './4/solution';
 import {
   solution1 as day5Solution1,
   solution2 as day5Solution2,
-} from "./5/solution";
+} from './5/solution';
 import {
   solution1 as day6Solution1,
   solution2 as day6Solution2,
-} from "./6/solution";
+} from './6/solution';
+import {
+  solution1 as day7Solution1,
+  solution2 as day7Solution2,
+} from './7/solution';
 
-import { createInterface } from "readline/promises";
+import { createInterface } from 'readline/promises';
 
 const solutions = new Map<number, Map<number, () => Promise<void>>>([
   [
@@ -68,6 +72,13 @@ const solutions = new Map<number, Map<number, () => Promise<void>>>([
       [2, day6Solution2],
     ]),
   ],
+  [
+    7,
+    new Map([
+      [1, day7Solution1],
+      [2, day7Solution2],
+    ]),
+  ],
 ]);
 
 const readline = createInterface({
@@ -78,24 +89,24 @@ const readline = createInterface({
 const run = async () => {
   let keepRunning = true;
   do {
-    let day = await readline.question("Please select which challenge day  ");
+    let day = await readline.question('Please select which challenge day  ');
 
     let dayNum = parseInt(day, 10);
 
     while (isNaN(dayNum) || !solutions.has(dayNum)) {
-      day = await readline.question("Invalid day. Please try again  ");
+      day = await readline.question('Invalid day. Please try again  ');
       dayNum = parseInt(day, 10);
     }
 
     let challenge = await readline.question(
-      "Would you like to do challenge 1 or 2?  "
+      'Would you like to do challenge 1 or 2?  '
     );
 
     let challengeNum = parseInt(challenge, 10);
 
     while (isNaN(challengeNum) || !solutions.get(dayNum)?.has(challengeNum)) {
       challenge = await readline.question(
-        "Invalid challenge. Please try again.  "
+        'Invalid challenge. Please try again.  '
       );
 
       challengeNum = parseInt(challenge, 10);
@@ -105,7 +116,7 @@ const run = async () => {
     await solutionToRun();
 
     let shouldContinue = await readline.question(
-      "Do you want to run another challenge?  "
+      'Do you want to run another challenge?  '
     );
     while (
       !(/^[yY].*/.test(shouldContinue) || /^[nN].*/.test(shouldContinue))

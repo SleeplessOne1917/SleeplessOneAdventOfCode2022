@@ -1,5 +1,5 @@
-import { join } from "path";
-import { open } from "fs/promises";
+import { join } from 'path';
+import { open } from 'fs/promises';
 
 const caclulatePriority = (item: string) => {
   const charCode = item.charCodeAt(0);
@@ -30,8 +30,8 @@ const prioritizeRucksack = (rucksack: string) => {
 };
 
 export const solution1 = async () => {
-  console.log("Caclulating priorities of mis-packed rucksack items");
-  const file = await open(join("3", "input.txt"));
+  console.log('Caclulating priorities of mis-packed rucksack items');
+  const file = await open(join('3', 'input.txt'));
 
   let totalPriority = 0;
 
@@ -64,8 +64,8 @@ const prioritizeGroup = (group: string[]) => {
 };
 
 export const solution2 = async () => {
-  console.log("Caclulating priorities of group badges");
-  const file = await open(join("3", "input.txt"));
+  console.log('Caclulating priorities of group badges');
+  const file = await open(join('3', 'input.txt'));
 
   const lines = [];
 

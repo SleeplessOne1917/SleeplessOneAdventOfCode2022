@@ -1,12 +1,12 @@
-import { FileHandle, open } from "fs/promises";
+import { FileHandle, open } from 'fs/promises';
 
-import { join } from "path";
+import { join } from 'path';
 
 const crateRegex = /(\[[A-Z]\]|\s{3})\s?/g;
 const moveRegex = /move (\d+) from (\d+) to (\d+)/;
 const letterRegex = /([A-Z])/;
 
-type CraneMode = "one-by-one" | "group";
+type CraneMode = 'one-by-one' | 'group';
 
 const getLines = async (file: FileHandle) => {
   const lines: string[] = [];
@@ -63,7 +63,7 @@ const organizeCrates = (
   lines: string[],
   mode: CraneMode
 ) => {
-  const moveCrates = mode === "group" ? moveCratesByGroup : moveCratesOneByOne;
+  const moveCrates = mode === 'group' ? moveCratesByGroup : moveCratesOneByOne;
 
   for (const line of lines) {
     if (moveRegex.test(line)) {
@@ -78,8 +78,8 @@ const organizeCrates = (
 };
 
 const solution = async (mode: CraneMode) => {
-  console.log("Organizing crates");
-  const file = await open(join("5", "input.txt"));
+  console.log('Organizing crates');
+  const file = await open(join('5', 'input.txt'));
 
   const stacks = [...Array(9).keys()].map<string[]>(() => []);
 
@@ -89,11 +89,11 @@ const solution = async (mode: CraneMode) => {
 
   organizeCrates(stacks, lines, mode);
 
-  const topsString = stacks.map((stack) => stack[stack.length - 1]).join("");
+  const topsString = stacks.map((stack) => stack[stack.length - 1]).join('');
 
   console.log(`The tops of each crate stack are ${topsString}`);
 };
 
-export const solution1 = async () => await solution("one-by-one");
+export const solution1 = async () => await solution('one-by-one');
 
-export const solution2 = async () => await solution("group");
+export const solution2 = async () => await solution('group');
