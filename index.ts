@@ -26,6 +26,10 @@ import {
   solution1 as day7Solution1,
   solution2 as day7Solution2,
 } from './7/solution';
+import {
+  solution1 as day8Solution1,
+  solution2 as day8Solution2,
+} from './8/solution';
 
 import { createInterface } from 'readline/promises';
 
@@ -77,6 +81,13 @@ const solutions = new Map<number, Map<number, () => Promise<void>>>([
     new Map([
       [1, day7Solution1],
       [2, day7Solution2],
+    ]),
+  ],
+  [
+    8,
+    new Map([
+      [1, day8Solution1],
+      [2, day8Solution2],
     ]),
   ],
 ]);
