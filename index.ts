@@ -3,6 +3,10 @@ import {
   solution2 as day10Solution2,
 } from './10/solution';
 import {
+  solution1 as day11Solution1,
+  solution2 as day11Solution2,
+} from './11/solution';
+import {
   solution1 as day1Solution1,
   solution2 as day1Solution2,
 } from './1/solution';
@@ -110,6 +114,13 @@ const solutions = new Map<number, Map<number, () => Promise<void>>>([
     new Map([
       [1, day10Solution1],
       [2, day10Solution2],
+    ]),
+  ],
+  [
+    11,
+    new Map([
+      [1, day11Solution1],
+      [2, day11Solution2],
     ]),
   ],
 ]);
