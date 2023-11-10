@@ -4,17 +4,18 @@ import { open } from 'fs/promises';
 let monkies: Monkey[] = [];
 
 type MonkeyArgs = {
-  items: bigint[];
-  operation: (old: bigint) => bigint;
+  items: number[];
+  operation: (old: number) => number;
   testNum: number;
   testTrueMonkey: number;
   testFalseMonkey: number;
 };
 
 class Monkey {
-  items: bigint[];
-  operation: (old: bigint) => bigint;
-  throw: (item: bigint) => void;
+  items: number[];
+  operation: (old: number) => number;
+  throw: (item: number) => void;
+  testNum: number;
 
   constructor({
     items,
@@ -25,8 +26,9 @@ class Monkey {
   }: MonkeyArgs) {
     this.items = items;
     this.operation = operation;
-    this.throw = (item: bigint) => {
-      if (item % BigInt(testNum) === BigInt(0)) {
+    this.testNum = testNum;
+    this.throw = (item: number) => {
+      if (item % testNum === 0) {
         monkies[testTrueMonkey].items.push(item);
       } else {
         monkies[testFalseMonkey].items.push(item);
@@ -49,9 +51,7 @@ const initializeMonkies = async () => {
   for await (const line of file.readLines()) {
     if (itemsRegex.test(line)) {
       const itemsMatch = line.match(itemsRegex)!;
-      const items = itemsMatch[1]
-        .split(', ')
-        .map((item) => BigInt(parseInt(item, 10)));
+      const items = itemsMatch[1].split(', ').map((item) => parseInt(item, 10));
       args.items = items;
     }
 
@@ -61,8 +61,8 @@ const initializeMonkies = async () => {
 
       args.operation = (old) =>
         operationMatch[1] === '+'
-          ? old + (isNaN(num) ? old : BigInt(num))
-          : old * (isNaN(num) ? old : BigInt(num));
+          ? old + (isNaN(num) ? old : num)
+          : old * (isNaN(num) ? old : num);
     }
 
     if (testRegex.test(line)) {
@@ -100,17 +100,18 @@ const calculateMonkeyBusiness = async ({
   await initializeMonkies();
 
   const inspections = [...Array(monkies.length).keys()].map(() => 0);
+  const limit = monkies.reduce((acc, { testNum }) => acc * testNum, 1);
 
   for (let round = 0; round < rounds; ++round) {
-    console.log(`Doing round ${round + 1}`);
+    //console.log(`Doing round ${round + 1}`);
     monkies.forEach((monkey, i) => {
       monkey.items.forEach((item, j) => {
         ++inspections[i];
         let itemToThrow = item;
-        itemToThrow = monkey.operation(itemToThrow);
+        itemToThrow = monkey.operation(itemToThrow % limit);
 
         if (shouldDivideWorryLevel) {
-          itemToThrow = itemToThrow / BigInt(3);
+          itemToThrow = itemToThrow / 3;
         }
 
         monkey.throw(itemToThrow);
@@ -140,8 +141,8 @@ const solution = async ({
       {
         rounds,
         shouldDivideWorryLevel,
-      }
-    )}`
+      },
+    )}`,
   );
 };
 
