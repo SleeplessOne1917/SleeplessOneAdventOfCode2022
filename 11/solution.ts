@@ -11,11 +11,17 @@ type MonkeyArgs = {
   testFalseMonkey: number;
 };
 
+type SolutionArgs = {
+  rounds: number;
+  shouldDivide?: boolean;
+};
+
 class Monkey {
   items: number[];
   operation: (old: number) => number;
   throw: (item: number) => void;
   testNum: number;
+  inspections = 0;
 
   constructor({
     items,
@@ -28,11 +34,9 @@ class Monkey {
     this.operation = operation;
     this.testNum = testNum;
     this.throw = (item: number) => {
-      if (item % testNum === 0) {
-        monkies[testTrueMonkey].items.push(item);
-      } else {
-        monkies[testFalseMonkey].items.push(item);
-      }
+      monkies[
+        item % testNum === 0 ? testTrueMonkey : testFalseMonkey
+      ].items.push(item);
     };
   }
 }
@@ -51,18 +55,18 @@ const initializeMonkies = async () => {
   for await (const line of file.readLines()) {
     if (itemsRegex.test(line)) {
       const itemsMatch = line.match(itemsRegex)!;
-      const items = itemsMatch[1].split(', ').map((item) => parseInt(item, 10));
-      args.items = items;
+      args.items = itemsMatch[1].split(', ').map((item) => parseInt(item, 10));
     }
 
     if (operationRegex.test(line)) {
       const operationMatch = line.match(operationRegex)!;
-      const num = parseInt(operationMatch[2], 10);
+      const rhs = parseInt(operationMatch[2], 10);
 
-      args.operation = (old) =>
-        operationMatch[1] === '+'
-          ? old + (isNaN(num) ? old : num)
-          : old * (isNaN(num) ? old : num);
+      args.operation = (old) => {
+        const rhsNum = isNaN(rhs) ? old : rhs;
+
+        return operationMatch[1] === '+' ? old + rhsNum : old * rhsNum;
+      };
     }
 
     if (testRegex.test(line)) {
@@ -92,62 +96,47 @@ const initializeMonkies = async () => {
 
 const calculateMonkeyBusiness = async ({
   rounds,
-  shouldDivideWorryLevel,
-}: {
-  rounds: number;
-  shouldDivideWorryLevel: boolean;
-}) => {
+  shouldDivide = true,
+}: SolutionArgs) => {
   await initializeMonkies();
 
-  const inspections = [...Array(monkies.length).keys()].map(() => 0);
   const limit = monkies.reduce((acc, { testNum }) => acc * testNum, 1);
 
   for (let round = 0; round < rounds; ++round) {
-    //console.log(`Doing round ${round + 1}`);
-    monkies.forEach((monkey, i) => {
-      monkey.items.forEach((item, j) => {
-        ++inspections[i];
-        let itemToThrow = item;
-        itemToThrow = monkey.operation(itemToThrow % limit);
+    console.log(`Doing round ${round + 1}`);
 
-        if (shouldDivideWorryLevel) {
-          itemToThrow = itemToThrow / 3;
-        }
-
-        monkey.throw(itemToThrow);
-      });
+    for (const monkey of monkies) {
+      for (const item of monkey.items) {
+        ++monkey.inspections;
+        monkey.throw(
+          shouldDivide
+            ? Math.floor(monkey.operation(item) / 3)
+            : monkey.operation(item % limit),
+        );
+      }
 
       monkey.items = [];
-    });
+    }
   }
 
-  return [...inspections]
+  return monkies
+    .map(({ inspections }) => inspections)
     .sort((a, b) => a - b)
     .slice(-2)
     .reduce((acc, cur) => cur * acc, 1);
 };
 
-const solution = async ({
-  rounds,
-  shouldDivideWorryLevel,
-}: {
-  rounds: number;
-  shouldDivideWorryLevel: boolean;
-}) => {
+const solution = async (args: SolutionArgs) => {
   console.log('Calculating monkey business');
 
   console.log(
-    `Monkey business level after ${rounds} rounds is ${await calculateMonkeyBusiness(
-      {
-        rounds,
-        shouldDivideWorryLevel,
-      },
-    )}`,
+    `Monkey business level after ${
+      args.rounds
+    } rounds is ${await calculateMonkeyBusiness(args)}`,
   );
 };
 
-export const solution1 = async () =>
-  await solution({ rounds: 20, shouldDivideWorryLevel: true });
+export const solution1 = () => solution({ rounds: 20 });
 
-export const solution2 = async () =>
-  await solution({ rounds: 10000, shouldDivideWorryLevel: false });
+export const solution2 = () =>
+  solution({ rounds: 10_000, shouldDivide: false });
